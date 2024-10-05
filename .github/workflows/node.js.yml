@@ -31,22 +31,17 @@ jobs:
       with:
         browser: chrome  # You can specify other browsers like electron or firefox
 
-    - name: List Cypress videos directory contents
-      run: dir cypress/videos
-
-    - name: List Cypress screenshots directory contents
-      run: dir cypress/screenshots
-
     - name: Archive Cypress artifacts
-    
       uses: actions/upload-artifact@v4
       if: failure()
       with:
           name: cypress-screenshots
+          run: dir cypress/screenshots
           path: cypress/screenshots/**/*
       # Test run video was always captured, so this action uses "always()" condition
     - uses: actions/upload-artifact@v4
       if: always()
       with:
+        run: dir cypress/videos
         name: cypress-videos
         path: cypress/videos/**/*
