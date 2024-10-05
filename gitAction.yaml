@@ -1,0 +1,64 @@
+# .github/workflows/cypress-ci.yml
+name: Cypress CI Pipeline (Windows)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cypress-run:
+    runs-on: windows-latest  # Use Windows runner
+    
+    steps:
+      # Step 1: Checkout the repository at the correct branch
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: feature/1.4.0  # Ensures the workflow is executed for the correct branch
+
+      # Step 2: Set up the latest Node.js version
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'  # This will always get the latest stable Node.js version
+
+      # Step 3: Cache node modules (use local paths for Windows)
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: C:\Users\runneradmin\AppData\Roaming\npm-cache  # Path to npm cache on Windows
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: npm ci  # This command is faster and cleaner than npm install
+
+      # Step 5: Start your application
+      - name: Start the application
+        run: |
+          Start-Process 'npm' -ArgumentList 'start' -NoNewWindow
+        env:
+          CI: true  # Ensure Cypress runs in CI mode
+
+      # Step 6: Run Cypress tests
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome  # You can specify other browsers like electron or firefox
+          headless: false    # Run tests in headless mode (default)
+
+      # Step 7: Archive Cypress artifacts (videos and screenshots)
+      - name: Archive Cypress artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
