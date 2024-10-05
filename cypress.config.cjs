@@ -19,7 +19,6 @@
 // });
 
 const { defineConfig } = require('cypress');
-const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 
 module.exports = defineConfig({
 
@@ -27,22 +26,19 @@ module.exports = defineConfig({
   experimentalMemoryManagement: true,
   defaultCommandTimeout: 30000,
   video: true, // Enable video recording
-  screenshotsFolder: 'cypress/screenshots',
-  videosFolder: 'cypress/videos',
-  reporter: 'cypress-allure-plugin', // Use Allure reporter
+  screenshotsFolder: 'cypress/screenshots', // Default path for screenshots
+  videosFolder: 'cypress/videos', // Default path for videos
+  reporter: 'mochawesome', // Specify the reporter
+  reporterOptions: {
+    reportDir: 'cypress/reports', // Folder for saving reports
+    overwrite: false,
+    html: false,
+    json: true,
+  },
 
   e2e: {
     setupNodeEvents(on, config) {
-      allureWriter(on, config); // Enable Allure plugin
-      return config;
-    },
-  },
-
-  reporterOptions: {
-    allure: {
-      outputDir: 'cypress/reports/allure-results', // Allure results output directory
-      overwrite: false,
-      clean: true,
+      // Add node event listeners here if needed
     },
   },
 });

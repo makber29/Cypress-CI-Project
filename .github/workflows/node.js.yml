@@ -22,9 +22,6 @@ jobs:
 
     - name: Clear npm cache
       run: npm cache clean --force  # Clear npm cache to avoid potential issues
-
-    - name: Install Allure Plugin
-      run: npm install @shelex/cypress-allure-plugin --save-dev
     # - name: Install Dependencies
     #   run: npm ci  # Use npm ci for clean installs based on package-lock.json
 
@@ -33,27 +30,31 @@ jobs:
       with:
         browser: chrome  # You can specify other browsers like electron or firefox
 
+        
     - name: Archive Cypress artifacts
-      uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-          name: cypress-screenshots
-          path: cypress/screenshots/**/*
-      # Test run video was always captured, so this action uses "always()" condition
-    - uses: actions/upload-artifact@v4
       if: always()
+      uses: actions/upload-artifact@v3
       with:
-        name: cypress-videos
-        path: cypress/videos/**/*
+       name: cypress-artifacts
+       path: |
+          cypress/videos/**/*
+          cypress/screenshots/**/*
+          cypress/reports/**/*
+    # - name: Archive Cypress artifacts
+    #   uses: actions/upload-artifact@v4
+    #   if: failure()
+    #   with:
+    #       name: cypress-screenshots
+    #       path: cypress/screenshots/**/*
+    #   # Test run video was always captured, so this action uses "always()" condition
+    # - uses: actions/upload-artifact@v4
+      # if: always()
+    #   with:
+    #     name: cypress-videos
+    #     path: cypress/videos/**/*
 
-        
-    - name: Generate Allure Report
-      run: allure generate cypress/reports/allure-results --clean
-
-    - name: Upload Allure Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: allure-report
-        path: cypress/reports/allure-results
-
-        
+    # - name: Upload Allure Report
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: allure-report
+    #     path: cypress/reports/allure-results
