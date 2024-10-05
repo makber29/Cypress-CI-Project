@@ -32,8 +32,7 @@ module.exports = defineConfig({
   reporterOptions: {
     reportDir: 'cypress/reports', // Folder for saving reports
     overwrite: false,
-    html: false,
-    json: true,
+    html: true,
   },
 
   e2e: {
