@@ -31,3 +31,12 @@ jobs:
       with:
         browser: chrome  # You can specify other browsers like electron or firefox
         headless: false    # Run tests in headless mode (default)
+
+    - name: Archive Cypress artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+          name: cypress-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
