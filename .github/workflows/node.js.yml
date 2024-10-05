@@ -43,8 +43,12 @@ jobs:
       with:
         name: cypress-videos
         path: cypress/videos/**/*
-    - uses: actions/upload-artifact@v4
-      if: always()
+
+    - name: Generate Allure Report
+      run: allure generate cypress/reports/allure-results --clean
+
+    - name: Upload Allure Report
+      uses: actions/upload-artifact@v4
       with:
-          name: cypress-report
-          path: cypress/reports/**/* 
+        name: allure-report
+        path: allure-report
