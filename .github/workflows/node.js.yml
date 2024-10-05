@@ -30,13 +30,17 @@ jobs:
       uses: cypress-io/github-action@v5
       with:
         browser: chrome  # You can specify other browsers like electron or firefox
-        headless: false    # Run tests in headless mode (default)
 
     - name: Archive Cypress artifacts
-      if: always()
-      uses: actions/upload-artifact@v3
+    
+      uses: actions/upload-artifact@v2
+      if: failure()
       with:
-          name: cypress-artifacts
-          path: |
-            cypress/videos
-            cypress/screenshots
+          name: cypress-screenshots
+          path: cypress/screenshots
+      # Test run video was always captured, so this action uses "always()" condition
+    - uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: cypress-videos
+        path: cypress/videos
