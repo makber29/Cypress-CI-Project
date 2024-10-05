@@ -66,9 +66,9 @@ describe('example to-do app', () => {
     // the child checkbox <input> element and use the `check` command to check it.
     cy.contains('Pay electric bill')
       .parent()
-      .find('input[type=checkbox]')
+      .find('input[type=checkboxs]')
       .check()
-      
+
 
     // Now that we've checked the button, we can go ahead and make sure
     // that the list element is now marked as completed.
