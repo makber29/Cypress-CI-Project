@@ -26,5 +26,6 @@ jobs:
     - name: Install Dependencies
       run: npm ci  # Use npm ci for clean installs based on package-lock.json
 
-    - name: Run Tests
-      run: npm test  # Run tests
+    - name: Run Cypress Tests
+      run: npx cypress run
+      
