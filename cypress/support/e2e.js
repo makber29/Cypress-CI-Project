@@ -18,3 +18,23 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+import '@shelex/cypress-allure-plugin';
+
+// Attach screenshots to Allure on failure
+Cypress.on('test:after:run', (test, runnable) => {
+  if (test.state === 'failed') {
+    const screenshotFileName = `${runnable.parent.title} -- ${test.title} (failed).png`;
+    const videoFileName = `${runnable.parent.title}.mp4`;
+    
+    // Attach screenshot
+    cy.allure().logStep('Adding screenshot');
+    cy.allure().attachScreenshot(screenshotFileName);
+
+    // Attach video if available
+    if (Cypress.config('video')) {
+      cy.allure().logStep('Adding video');
+      cy.allure().attachVideo(videoFileName);
+    }
+  }
+});

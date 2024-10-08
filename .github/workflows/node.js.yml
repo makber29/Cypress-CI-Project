@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -17,26 +17,37 @@ jobs:
     - name: Use Node.js 20v
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  # Set to latest Node.js version
+        node-version: '20'
         cache: 'npm'
 
     - name: Clear npm cache
-      run: npm cache clean --force  # Clear npm cache to avoid potential issues
-    # - name: Install Dependencies
-    #   run: npm ci  # Use npm ci for clean installs based on package-lock.json
+      run: npm cache clean --force
 
-    - name: Run Cypress tests
+    - name: Install dependencies
+      run: npm ci  # Use npm ci for clean installs based on package-lock.json
+
+    - name: Install Allure commandline
+      run: npm install -g allure-commandline --save-dev
+
+    - name: Run Cypress tests with Allure
       uses: cypress-io/github-action@v5
       with:
-        browser: chrome  # You can specify other browsers like electron or firefox
+        browser: chrome
+        config: allure=true  # Enable Allure plugin
+      env:
+        CYPRESS_VIDEO: true
+        CYPRESS_SCREENSHOT_ON_RUN_FAILURE: true  # Ensure videos and screenshots are enabled
 
-        
-    - name: Archive Cypress artifacts
+    - name: Generate Allure Report
+      run: |
+        allure generate allure-results --clean -o allure-report
+
+    - name: Archive Allure Report, Videos, and Screenshots
       if: always()
       uses: actions/upload-artifact@v4
       with:
-       name: cypress-artifacts
-       path: |
+        name: cypress-allure-artifacts
+        path: |
+          allure-report
           cypress/videos/**/*
           cypress/screenshots/**/*
-          cypress/reports/**/*
