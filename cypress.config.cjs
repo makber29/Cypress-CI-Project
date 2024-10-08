@@ -19,6 +19,7 @@
 // });
 
 const { defineConfig } = require('cypress');
+const { json } = require('react-router-dom');
 
 module.exports = defineConfig({
 
@@ -33,6 +34,7 @@ module.exports = defineConfig({
     reportDir: 'cypress/reports', // Folder for saving reports
     overwrite: false,
     html: true,
+    json:true,
     reportFilename: 'cypress-report',
     merge: true  
   },
