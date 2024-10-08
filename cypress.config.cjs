@@ -35,8 +35,7 @@ module.exports = defineConfig({
     overwrite: false,
     html: true,
     json:true,
-    reportFilename: 'cypress-report',
-    merge: true  
+    merge: true,
   },
   e2e: {
     setupNodeEvents(on, config) {

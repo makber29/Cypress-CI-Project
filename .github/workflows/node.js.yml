@@ -39,4 +39,4 @@ jobs:
        path: |
           cypress/videos/**/*
           cypress/screenshots/**/*
-          cypress/reports/cypress-report.html
+          cypress/reports/**/*
