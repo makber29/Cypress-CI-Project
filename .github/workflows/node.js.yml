@@ -41,6 +41,6 @@ jobs:
       with:
         name: cypress-allure-artifacts
         path: |
-          allure-report
           cypress/videos/**/*
           cypress/screenshots/**/*
+          cypress/allure-report/**/*
