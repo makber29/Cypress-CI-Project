@@ -49,14 +49,10 @@ const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 module.exports = {
   e2e: {
     setupNodeEvents(on, config) {
-      allureWriter(on, config);
+      allureWriter(on, config);  // Setup Allure plugin
       return config;
     },
   },
   video: true,  // Enable video recording
   screenshotOnRunFailure: true,  // Take screenshots on test failure
-  reporter: 'cypress-mochawesome-reporter',
-  reporterOptions: {
-    reportDir: 'allure-results',
-  },
 };
