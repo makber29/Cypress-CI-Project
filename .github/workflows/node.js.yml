@@ -17,30 +17,26 @@ jobs:
     - name: Use Node.js 20v
       uses: actions/setup-node@v3
       with:
-        node-version: '20'
+        node-version: '20'  # Set to latest Node.js version
         cache: 'npm'
 
     - name: Clear npm cache
-      run: npm cache clean --force
+      run: npm cache clean --force  # Clear npm cache to avoid potential issues
+    # - name: Install Dependencies
+    #   run: npm ci  # Use npm ci for clean installs based on package-lock.json
 
-    - name: Install Allure commandline
-      run: npm install -g allure-commandline --save-dev
-
-    - name: Run Cypress tests with Allure
+    - name: Run Cypress tests
       uses: cypress-io/github-action@v5
       with:
-        browser: chrome
+        browser: chrome  # You can specify other browsers like electron or firefox
 
-    - name: Generate Allure Report
-      run: |
-        allure generate allure-results --clean -o allure-report
-
-    - name: Archive Allure Report, Videos, and Screenshots
+        
+    - name: Archive Cypress artifacts
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: cypress-allure-artifacts
-        path: |
+       name: cypress-artifacts
+       path: |
           cypress/videos/**/*
           cypress/screenshots/**/*
-          cypress/allure-report/**/*
+          cypress/reports/**/*
