@@ -33,8 +33,9 @@ module.exports = defineConfig({
     reportDir: 'cypress/reports', // Folder for saving reports
     overwrite: false,
     html: true,
+    reportFilename: 'cypress-report',
+    merge: true  
   },
-
   e2e: {
     setupNodeEvents(on, config) {
       // Add node event listeners here if needed
